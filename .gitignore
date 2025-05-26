@@ -1,0 +1,12 @@
+# Archivos y carpetas a ignorar por Git
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+.env
+*.sqlite3
+static/*.tmp
+image/*.tmp
+.idea/
+.vscode/
+*.log
