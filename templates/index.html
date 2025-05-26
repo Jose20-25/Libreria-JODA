@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Libreria Joda - Tienda en Línea</title>
+    <link rel="icon" href="/static/logo/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #2d3e50;
+            color: #fff;
+            padding: 24px 0 16px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        header img {
+            height: 60px;
+            vertical-align: middle;
+            margin-right: 16px;
+        }
+        header h1 {
+            display: inline-block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            vertical-align: middle;
+            letter-spacing: 2px;
+        }
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .productos-container {
+            flex: 3;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin: 32px 0;
+        }
+        .producto {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+            border: none;
+            padding: 24px 18px 18px 18px;
+            margin: 18px;
+            width: 270px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: box-shadow 0.2s;
+        }
+        .producto:hover {
+            box-shadow: 0 4px 24px rgba(44,62,80,0.18);
+        }
+        .producto img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .producto h2 {
+            margin: 0 0 8px 0;
+            font-size: 1.3rem;
+            color: #2d3e50;
+            font-weight: 600;
+            text-align: center;
+        }
+        .producto p {
+            margin: 4px 0;
+            color: #555;
+            text-align: center;
+        }
+        .producto .precio {
+            font-size: 1.1rem;
+            color: #1abc9c;
+            font-weight: bold;
+            margin: 8px 0 4px 0;
+        }
+        .producto .disponible {
+            font-size: 0.95rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .producto form {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .producto input[type="number"] {
+            width: 60px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .producto button {
+            background: #1abc9c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 6px rgba(44,62,80,0.08);
+        }
+        .producto button:hover {
+            background: #159c85;
+        }
+        .producto .fa-whatsapp {
+            margin-right: 6px;
+        }
+        .carrito-lateral {
+            flex: 1;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+            margin: 32px 0 0 32px;
+            padding: 24px 18px;
+            min-width: 270px;
+            max-width: 320px;
+            position: sticky;
+            top: 32px;
+            height: fit-content;
+        }
+        .carrito-lateral h2 {
+            font-size: 1.3rem;
+            color: #2d3e50;
+            margin-top: 0;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+        .carrito-lateral ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 12px 0;
+        }
+        .total-lateral {
+            font-size: 1.1rem;
+            color: #1abc9c;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .carrito-lateral .btn-whatsapp {
+            background: #1abc9c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+        .carrito-lateral .btn-whatsapp:hover {
+            background: #159c85;
+        }
+        @media (max-width: 1100px) {
+            .main-container { flex-direction: column; align-items: stretch; }
+            .carrito-lateral { margin: 32px auto 0 auto; max-width: 95vw; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/static/logo/logo.png" alt="Logo Libreria Joda" onerror="this.style.display='none'">
+        <h1>Libreria Joda</h1>
+    </header>
+    <div class="main-container">
+        <div class="productos-container">
+            {% for producto in productos %}
+            <div class="producto">
+                <img src="/static/{{ producto.imagen }}" alt="{{ producto.nombre }}">
+                <h2>{{ producto.nombre }}</h2>
+                <p>{{ producto.descripcion }}</p>
+                <div class="precio">${{ producto.precio }}</div>
+                <div class="disponible">Disponible: {{ producto.cantidad }}</div>
+                <form action="/agregar_carrito" method="post">
+                    <input type="hidden" name="producto_id" value="{{ producto.id }}">
+                    <input type="number" name="cantidad" min="1" max="{{ producto.cantidad }}" value="1" required>
+                    <button type="submit"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <aside class="carrito-lateral">
+            <h2><i class="fas fa-shopping-cart"></i> Carrito</h2>
+            {% set carrito = session.get('carrito', {}) %}
+            {% if carrito %}
+            <ul>
+                {% set total = 0 %}
+                {% for pid, cantidad in carrito.items() %}
+                    {% set prod = (productos | selectattr('id', 'equalto', pid|int) | list)[0] %}
+                    <li style="margin-bottom:10px;">
+                        <strong>{{ prod.nombre }}</strong><br>
+                        Cantidad: {{ cantidad }}<br>
+                        <span style="color:#1abc9c;">${{ prod.precio * cantidad }}</span>
+                        <form action="/eliminar_del_carrito" method="post" style="display:inline;">
+                            <input type="hidden" name="producto_id" value="{{ prod.id }}">
+                            <button type="submit" style="background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1.1em;" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </li>
+                    {% set total = total + (prod.precio * cantidad) %}
+                {% endfor %}
+            </ul>
+            <div class="total-lateral">Total: ${{ total }}</div>
+            <form action="/enviar_pedido" method="post">
+                <input type="text" name="nombre_cliente" placeholder="Tu nombre" required style="width:100%;padding:8px;margin-bottom:8px;border-radius:4px;border:1px solid #ccc;">
+                <button class="btn-whatsapp" type="submit"><i class="fab fa-whatsapp"></i>Enviar pedido</button>
+            </form>
+            {% else %}
+            <p style="color:#888;">El carrito está vacío.</p>
+            {% endif %}
+        </aside>
+    </div>
+</body>
+</html>
